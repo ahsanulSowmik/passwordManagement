@@ -9,6 +9,8 @@ public class Main {
 
     public static String loggedInUserName;
 
+    public static String roleName;
+
 
     public static void main(String[] args) {
 
@@ -56,7 +58,7 @@ public class Main {
 
     public static void userDashboard() {
 
-        PasswordManager passwordManager = new PasswordManager();
+        User user = new User();
         Scanner scanner = new Scanner(System.in);
         int choice;
 
@@ -73,22 +75,22 @@ public class Main {
 
         switch (choice) {
             case 1:
-                passwordManager.addWebsitePassword(loggedInUserName);
+                user.addWebsitePassword(loggedInUserName);
                 break;
             case 2:
-                passwordManager.showWebsitesForUser(loggedInUserName);
+                user.showWebsitesForUser(loggedInUserName);
                 break;
             case 3:
-                passwordManager.addGamePassword(loggedInUserName);
+                user.addGamePassword(loggedInUserName);
                 break;
             case 4:
-                passwordManager.showGameForUser(loggedInUserName);
+                user.showGameForUser(loggedInUserName);
                 break;
             case 5:
-                passwordManager.addApplicationPassword(loggedInUserName);
+                user.addApplicationPassword(loggedInUserName);
                 break;
             case 6:
-                passwordManager.showApplicationForUser(loggedInUserName);
+                user.showApplicationForUser(loggedInUserName);
                 break;
             case 7:
                 System.out.println("Exiting Password Manager. Goodbye!");
@@ -102,18 +104,18 @@ public class Main {
 
     public static void adminDashboard() {
 
-        PasswordManager passwordManager = new PasswordManager();
+        User user = new User();
         Scanner scanner = new Scanner(System.in);
         int choice;
 
         System.out.println("1. All User");
-        System.out.println("1. Add Website Password for user");
-        System.out.println("2. All Website Password Individual User");
-        System.out.println("3. Add Game Password for user");
-        System.out.println("4. All Game Passwords Individual User");
-        System.out.println("5. Add Application Password for user");
-        System.out.println("6. All Application Passwords Individual User");
-        System.out.println("7. Exit");
+        System.out.println("2. Add Website Password for user");
+        System.out.println("3. All Website Password Individual User");
+        System.out.println("4. Add Game Password for user");
+        System.out.println("5. All Game Passwords Individual User");
+        System.out.println("6. Add Application Password for user");
+        System.out.println("7. All Application Passwords Individual User");
+        System.out.println("8. Exit");
         System.out.print("Enter your choice: ");
         choice = scanner.nextInt();
         String userName;
@@ -123,28 +125,34 @@ public class Main {
                 showAllUser();
                 break;
             case 2:
+                System.out.print("Enter User Name: ");
                 userName = scanner.next();
-                passwordManager.addWebsitePassword(userName);
+                user.addWebsitePassword(userName);
                 break;
             case 3:
+                System.out.print("Enter User Name: ");
                 userName = scanner.next();
-                passwordManager.showWebsitesForUser(userName);
+                user.showWebsitesForUser(userName);
                 break;
             case 4:
+                System.out.print("Enter User Name: ");
                 userName = scanner.next();
-                passwordManager.addGamePassword(userName);
+                user.addGamePassword(userName);
                 break;
             case 5:
+                System.out.print("Enter User Name: ");
                 userName = scanner.next();
-                passwordManager.showGameForUser(userName);
+                user.showGameForUser(userName);
                 break;
             case 6:
+                System.out.print("Enter User Name: ");
                 userName = scanner.next();
-                passwordManager.addApplicationPassword(userName);
+                user.addApplicationPassword(userName);
                 break;
             case 7:
+                System.out.print("Enter User Name: ");
                 userName = scanner.next();
-                passwordManager.showApplicationForUser(userName);
+                user.showApplicationForUser(userName);
                 break;
             case 8:
                 System.out.println("Exiting Password Manager. Goodbye!");
@@ -171,8 +179,8 @@ public class Main {
 
         // Check if the user already exists
         if (!isUserExists(userName)) {
-            User newUser = new User(userName, password, email);
-            newUser.encryptPassword("YourSecretKey"); // Use the same secret key during encryption
+            User newUser = new User(userName, password, email, "user");
+            newUser.encryptPassword("AbuNokibKamran"); // Use the same secret key during encryption
             // Write user details to CSV
             writeUserDataToCSV(newUser);
             System.out.println("Registration successful!");
@@ -224,7 +232,7 @@ public class Main {
         for (User user : users) {
             if (user.getUserName().equals(userName)) {
                 // Decrypt stored password and compare
-                String decryptedPassword = user.decryptPassword("YourSecretKey");
+                String decryptedPassword = user.decryptPassword("AbuNokibKamran");
                 if (decryptedPassword != null && decryptedPassword.equals(enteredPassword)) {
                     return true; // Valid credentials
                 }
@@ -252,7 +260,7 @@ public class Main {
                 String line = scanner.nextLine();
                 String[] parts = line.split(",");
                 if (parts.length == 3) {
-                    User user = new User(parts[0], parts[1], parts[2]);
+                    User user = new User(parts[0], parts[1], parts[2], parts[3]);
                     user.setEncryptedPassword(parts[1]); // Set the encrypted password
                     users.add(user);
                 }
